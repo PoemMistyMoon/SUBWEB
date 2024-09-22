@@ -55,7 +55,7 @@ export const targetConfig = [{
 }];
 export const backendConfig = [{
     label: 'ak-hk',
-    value: 'http://ak.zxxc.us.kg:25500?sub'
+    value: 'http://ak.zxxc.us.kg/sub?'
 },{
     label: 'subapi.fxxk.dedyn.io(CM提供-负载均衡后端)',
     value: 'https://subapi.fxxk.dedyn.io/sub?'
