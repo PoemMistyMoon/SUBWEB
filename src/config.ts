@@ -75,8 +75,8 @@ export const backendConfig = [{
 export const externalConfig = [{
     label: 'CM规则',
     options: [{
-        label: 'test)',
-        value: 'https://raw.githubusercontent.com/PoemMistyMoon/Clash-config/refs/heads/main/test.ini'
+        label: 'test',
+        value: 'https://raw.githubusercontent.com/PoemMistyMoon/Clashconfig/refs/heads/main/test.ini'
     }, {
         label: 'CM_Online 默认版 识别港美地区(与Github同步)',
         value: 'https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/config/ACL4SSR_Online.ini'
