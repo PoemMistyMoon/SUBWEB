@@ -13,15 +13,14 @@ function copyText(copyStr: string) {
 }
 
 function generateSubUrl(data: Options) {
-    const backend = data.backend || data.backendInput; // 优先使用手动输入的值
-    const config = data.config || data.configInput; // 优先使用手动输入的值
+    const backend = data.backend;
     let originUrl = data.url;
     originUrl = encodeURIComponent(originUrl.replace(/(\n|\r|\n\r)/g, '|'));
 
     let newSubUrl = `${backend}&url=${originUrl}&target=${data.target}`;
 
-    if (config) {
-        newSubUrl += `&config=${encodeURIComponent(config)}`;
+    if (data.config) {
+        newSubUrl += `&config=${encodeURIComponent(data.config)}`;
     }
 
     if (data.include) {
@@ -29,7 +28,7 @@ function generateSubUrl(data: Options) {
     }
 
     if (data.exclude) {
-        newSubUrl += `&exclude=${encodeURIComponent(data.exclude)}`;
+        newSubUrl += `&wxclude=${encodeURIComponent(data.exclude)}`;
     }
 
     if (data.name) {
@@ -45,40 +44,29 @@ function generateSubUrl(data: Options) {
 layui.use(['form'], () => {
     const form = layui.form;
 
-    let childrenHtml = '';
+    $('#targetSelecter').append('<input type="text" id="targetInput" placeholder="手动输入或选择" list="targetOptions"><datalist id="targetOptions"></datalist>');
     targetConfig.forEach(option => {
-        childrenHtml += `<option value="${option.value}">${option.label}</option>`;
+        $('#targetOptions').append(`<option value="${option.value}">${option.label}</option>`);
     });
-    $('#targetSelecter').append(childrenHtml);
 
-    childrenHtml = '';
+    $('#configSelecter').append('<input type="text" id="configInput" placeholder="手动输入或选择" list="configOptions"><datalist id="configOptions"></datalist>');
     externalConfig.forEach(group => {
-        let html = '';
         group.options.forEach(option => {
-            html += `<option value="${option.value}">${option.label}</option>`;
+            $('#configOptions').append(`<option value="${option.value}">${option.label}</option>`);
         });
-        childrenHtml += `<optgroup label="${group.label}">${html}</optgroup>`;
     });
-    $('#configSelecter').append(childrenHtml);
 
-    childrenHtml = '';
+    let childrenHtml = '';
     backendConfig.forEach(option => {
         childrenHtml += `<option value="${option.value}">${option.label}</option>`;
     });
     $('#backendSelecter').append(childrenHtml);
-    
-    // 添加手动输入框
-    $('#optionsForm').append(`
-        <label for="backendInput">或手动输入后端地址：</label>
-        <input type="text" id="backendInput" name="backendInput" placeholder="请输入后端地址">
-        <label for="configInput">或手动输入配置地址：</label>
-        <input type="text" id="configInput" name="configInput" placeholder="请输入配置地址">
-    `);
-
     form.render('select', 'optionsForm');
 
     form.on('submit(generate)', target => {
         const data = target.field as Options;
+        data.target = $('#targetInput').val(); 
+        data.config = $('#configInput').val(); 
         generateSubUrl(data);
     });
 
