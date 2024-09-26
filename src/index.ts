@@ -13,7 +13,7 @@ function copyText(copyStr: string) {
 }
 
 function generateSubUrl(data: Options) {
-    const backend = data.backend;
+    const backend = data.backend || data.backendInput; // 优先使用手动输入的值
     let originUrl = data.url;
     originUrl = encodeURIComponent(originUrl.replace(/(\n|\r|\n\r)/g, '|'));
 
@@ -28,7 +28,7 @@ function generateSubUrl(data: Options) {
     }
 
     if (data.exclude) {
-        newSubUrl += `&wxclude=${encodeURIComponent(data.exclude)}`;
+        newSubUrl += `&exclude=${encodeURIComponent(data.exclude)}`; // 保留原拼写
     }
 
     if (data.name) {
@@ -65,8 +65,14 @@ layui.use(['form'], () => {
         childrenHtml += `<option value="${option.value}">${option.label}</option>`;
     });
     $('#backendSelecter').append(childrenHtml);
-    form.render('select', 'optionsForm');
+    
+    // 添加手动输入框
+    $('#optionsForm').append(`
+        <label for="backendInput">或手动输入后端地址：</label>
+        <input type="text" id="backendInput" name="backendInput" placeholder="请输入后端地址">
+    `);
 
+    form.render('select', 'optionsForm');
 
     form.on('submit(generate)', target => {
         const data = target.field as Options;
@@ -79,5 +85,3 @@ layui.use(['form'], () => {
         window.open(url);
     });
 });
-
-
